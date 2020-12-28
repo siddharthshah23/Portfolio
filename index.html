@@ -35,12 +35,84 @@
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet" />
 
+
+    <!-- jQuery CDN -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>></script>
+
     <!-- =======================================================
   * Template Name: iPortfolio - v1.5.0
   * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+
+  <script>
+    function submitToAPI(e) {
+    e.preventDefault();
+   var URL = "https://skln76vtg1.execute-api.us-east-1.amazonaws.com/test/sendemail";
+
+        var Namere = /[A-Za-z]{1}[A-Za-z]/;
+        if (!Namere.test($("#name-input").val())) {
+                     alert ("Name can not less than 2 char");
+            return;
+        }
+
+        if ($("#email-input").val()=="") {
+            alert ("Please enter your email id");
+            return;
+        }
+
+        var reeamil = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,6})?$/;
+        if (!reeamil.test($("#email-input").val())) {
+            alert ("Please enter valid email address");
+            return;
+        }
+
+        if ($("#subject-input").val()=="") {
+            alert ("Please enter something for subject");
+            return;
+        }
+
+        if ($("#message-input").val()=="") {
+            alert ("Please enter your message");
+            return;
+        }
+
+   var name = $("#name-input").val();
+   var email = $("#email-input").val();
+   var subject = $("#subject-input").val();
+   var message = $("#message-input").val();
+   var data = {
+      name : name,
+      email : email,
+      subject : subject,
+      message : message
+    };
+
+   $.ajax({
+     type: "POST",
+     url : "https://skln76vtg1.execute-api.us-east-1.amazonaws.com/test/sendemail",
+     dataType: "json",
+     crossDomain: "true",
+     contentType: "application/json; charset=utf-8",
+     data: JSON.stringify(data),
+
+     
+     success: function () {
+       // clear form and show a success message
+       alert("Successfull");
+       document.getElementById("contact-form").reset();
+   location.reload();
+     },
+     error: function () {
+       // show an error message
+       alert("UnSuccessfull");
+     }});
+ }
+</script>
+
+
   </head>
 
   <body>
@@ -921,10 +993,11 @@
 
             <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
               <form
-                action="forms/contact.php"
                 method="post"
                 role="form"
-                class="php-email-form"
+                //class="php-email-form"
+                action=""
+                id = "contact-form"
               >
                 <div class="form-row">
                   <div class="form-group col-md-6">
@@ -933,11 +1006,11 @@
                       type="text"
                       name="name"
                       class="form-control"
-                      id="name"
+                      id="name-input"
                       data-rule="minlen:4"
                       data-msg="Please enter at least 4 chars"
                     />
-                    <div class="validate"></div>
+                    <!-- <div class="validate"></div> -->
                   </div>
                   <div class="form-group col-md-6">
                     <label for="name">Your Email</label>
@@ -945,11 +1018,11 @@
                       type="email"
                       class="form-control"
                       name="email"
-                      id="email"
+                      id="email-input"
                       data-rule="email"
                       data-msg="Please enter a valid email"
                     />
-                    <div class="validate"></div>
+                    <!-- <div class="validate"></div> -->
                   </div>
                 </div>
                 <div class="form-group">
@@ -958,32 +1031,33 @@
                     type="text"
                     class="form-control"
                     name="subject"
-                    id="subject"
+                    id="subject-input"
                     data-rule="minlen:4"
                     data-msg="Please enter at least 8 chars of subject"
                   />
-                  <div class="validate"></div>
+                  <!-- <div class="validate"></div> -->
                 </div>
                 <div class="form-group">
                   <label for="name">Message</label>
                   <textarea
                     class="form-control"
                     name="message"
+                    id ="message-input"
                     rows="10"
                     data-rule="required"
                     data-msg="Please write something for us"
                   ></textarea>
-                  <div class="validate"></div>
+                  <!-- <div class="validate"></div> -->
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <div class="loading">Loading</div>
                   <div class="error-message"></div>
                   <div class="sent-message">
                     Your message has been sent. Thank you!
                   </div>
-                </div>
+                </div> -->
                 <div class="text-center">
-                  <button type="submit">Send Message</button>
+                  <button type="submit" onClick="submitToAPI(event)">Send Message</button>
                 </div>
               </form>
             </div>
